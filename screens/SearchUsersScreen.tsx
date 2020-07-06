@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, TextInput } from 'react-native';
 
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 import { searchUsers } from '../redux/modules/usersSlice';
 import { RootState } from '../redux/modules/reducer';
 import { User } from '../interfaces';
+import { UserCard } from '../components/UserCard';
 
 type SearchScreenProps = {
   searchUsers: (query: string) => void;
@@ -15,14 +16,17 @@ type SearchScreenProps = {
 }
 
 const SearchUsersScreen: React.FC<SearchScreenProps> = (props: SearchScreenProps) => {
-  useEffect(() => {
-    props.searchUsers('nas');
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text>test</Text>
+      <TextInput
+        style={styles.searchBox}
+        onChangeText={(text) => props.searchUsers(text)}
+      />
       <Text>{props.error}</Text>
+      <FlatList
+        data={props.users}
+        renderItem={({ item }) => <UserCard user={item} />}
+      />
     </View>
   );
 };
@@ -41,16 +45,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchUsersScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  searchBox: {
+    height: 40,
+    backgroundColor: '#ff9a9a',
+    marginHorizontal: 10,
+    padding: 10,
   },
 });
