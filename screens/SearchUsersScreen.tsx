@@ -34,10 +34,12 @@ const SearchUsersScreen: React.FC<SearchScreenProps> = (props: SearchScreenProps
     <View style={styles.container}>
       <TextInput
         style={styles.searchBox}
+        placeholder={'Search for a user...'}
         onChangeText={(text) => onChangeSearch(text)}
       />
       <Text>{props.error}</Text>
       <FlatList
+        ListEmptyComponent={<Text style={styles.emptyText}>No results found</Text>}
         data={props.users}
         renderItem={({ item }) => <UserCard user={item} />}
         onEndReached={loadNextPage}
@@ -65,6 +67,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#979797',
   },
   searchBox: {
     height: 40,
