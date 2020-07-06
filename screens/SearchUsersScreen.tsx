@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FlatList, StyleSheet, TextInput } from 'react-native';
 
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Text, View } from '../components/Themed';
 import { searchUsers } from '../redux/modules/usersSlice';
@@ -74,8 +73,10 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     height: 40,
-    backgroundColor: '#ff9a9a',
+    backgroundColor: '#f1f1f1',
     marginHorizontal: 10,
-    padding: 10,
+    padding: 15,
+    borderRadius: 100,
+    marginTop: 10,
   },
 });

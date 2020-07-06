@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { User } from '../interfaces';
 import { API_BASE_URL } from '../env.json';
 import { getData } from '../services/apiService';
+import {GridPhoto} from "../components/GridPhoto";
 
 // eslint-disable-next-line react/prop-types
 const UserProfileScreen = ({ route }) => {
@@ -17,7 +18,7 @@ const UserProfileScreen = ({ route }) => {
   // @ts-ignore
   useEffect(() => {
     const getPhotos = () => {
-      getData(`${API_BASE_URL}/users/${user.username}/photos`)
+      getData(`${API_BASE_URL}/users/${user.username}/photos?per_page=21`)
         .then(async (response) => {
           await setData(response);
           await setLoading(false);
@@ -39,18 +40,13 @@ const UserProfileScreen = ({ route }) => {
         </View>
       </View>
       <View style={styles.photoGrid}>
-        { data === null ? <ActivityIndicator />
+        { data === null ? <ActivityIndicator size="large"/>
           : (
             <FlatGrid
               itemDimension={100}
               spacing={5}
               data={data}
-              renderItem={({item}) =>
-                <Image
-                  style={styles.gridPhoto}
-                  source={{ uri: item.urls.regular }}
-                  resizeMode="cover"
-                />}
+              renderItem={({item}) => <GridPhoto urls={item.urls} />}
             />
           )}
       </View>
@@ -70,7 +66,6 @@ const styles = StyleSheet.create({
   username: {
     fontWeight: 'bold',
   },
-
   header: {
     backgroundColor: '#FFF',
     display: 'flex',
@@ -79,16 +74,14 @@ const styles = StyleSheet.create({
 
     padding: 20,
   },
-  gridPhoto: {
-    width: '100%',
-    height: 125,
-  },
   bioContainer: {
     width: '100%',
     height: '70%',
   },
   photoGrid: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 5,
     backgroundColor: '#f5f5f5',
   },

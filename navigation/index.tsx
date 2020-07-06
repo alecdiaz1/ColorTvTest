@@ -9,6 +9,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import SearchUsersScreen from '../screens/SearchUsersScreen';
 import { UserProfileScreen } from '../screens/UserProfileScreen';
+import {PhotoDetail} from "../screens/PhotoDetail";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -35,8 +36,12 @@ function RootNavigator() {
         component={SearchUsersScreen}
       />
       <Stack.Screen
-        name="UserProfileScreen"
+        name="UserProfile"
         component={UserProfileScreen}
+      />
+      <Stack.Screen
+        name="PhotoDetail"
+        component={PhotoDetail}
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>

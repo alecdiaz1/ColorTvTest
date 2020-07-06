@@ -2,16 +2,23 @@ import * as React from 'react';
 import {
   View, Text, Image, StyleSheet, ActivityIndicator, Dimensions, TouchableOpacity,
 } from 'react-native';
+import {useNavigation} from "@react-navigation/native";
 
 type GridPhoto = {
   url: string;
 }
 
 const GridPhoto: React.FC<GridPhoto> = (props: GridPhoto) => {
-  const { url } = props;
+  const { urls } = props;
+  const url = urls.regular;
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('PhotoDetail', {
+        url: urls.full,
+      })}
+    >
       <Image
         style={styles.gridPhoto}
         source={{ url }}

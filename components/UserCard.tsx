@@ -16,7 +16,9 @@ const UserCard: React.FC<UserCardProps> = (props: UserCardProps) => {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('UserProfile')}
+      onPress={() => navigation.navigate('UserProfile', {
+        user: user,
+      })}
     >
         <Image
           style={styles.profilePicture}
@@ -36,10 +38,11 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#dbdbdb',
+    backgroundColor: '#e8e8e8',
     padding: 20,
     marginHorizontal: 10,
     marginBottom: 10,
+    borderRadius: 10,
   },
   nameContainer: {
     display: 'flex',
