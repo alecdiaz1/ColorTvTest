@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { API_BASE_URL } from '../../env.json';
-import {getAccessToken, getData} from '../../services/apiService';
+import { getData } from '../../services/apiService';
 
 const initialState = {
   loading: false,
@@ -18,7 +18,11 @@ const usersSlice = createSlice({
     fetchUsersSuccess(state, action) {
       state.loading = false;
       // @ts-ignore
-      state.users = state.users.concat(action.payload);
+      if (action.payload.page > 1) {
+        state.users = state.users.concat(action.payload.results);
+      } else {
+        state.users = action.payload.results;
+      }
       state.error = '';
     },
     fetchUsersFailure(state, action) {
@@ -38,7 +42,7 @@ export const searchUsers = (searchTerm: string, page?: 1 | number) => function (
       if (response.errors) {
         dispatch(fetchUsersFailure(response.errors[0]));
       } else {
-        dispatch(fetchUsersSuccess(response.results));
+        dispatch(fetchUsersSuccess({ page, results: response.results }));
       }
     })
     .catch((error) => {
