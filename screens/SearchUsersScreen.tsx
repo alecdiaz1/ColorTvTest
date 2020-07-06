@@ -10,22 +10,38 @@ import { User } from '../interfaces';
 import { UserCard } from '../components/UserCard';
 
 type SearchScreenProps = {
-  searchUsers: (query: string) => void;
+  searchUsers: (query: string, page?: number) => void;
   error: string;
   users: Array<User>
 }
 
 const SearchUsersScreen: React.FC<SearchScreenProps> = (props: SearchScreenProps) => {
+  const loadNextPage = async () => {
+    await setPage(page + 1);
+    props.searchUsers(searchTerm, page);
+  };
+
+  const onChangeSearch = async (text: string) => {
+    await setPage(1);
+    await setSearchTerm(text);
+    props.searchUsers(text, page);
+  };
+
+  const [page, setPage] = React.useState(1);
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.searchBox}
-        onChangeText={(text) => props.searchUsers(text)}
+        onChangeText={(text) => onChangeSearch(text)}
       />
       <Text>{props.error}</Text>
       <FlatList
         data={props.users}
         renderItem={({ item }) => <UserCard user={item} />}
+        onEndReached={loadNextPage}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
@@ -37,7 +53,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  searchUsers: (query: string) => dispatch(searchUsers(query)),
+  searchUsers: (query: string, page: number) => dispatch(searchUsers(query, page)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchUsersScreen);

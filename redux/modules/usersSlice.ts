@@ -17,7 +17,8 @@ const usersSlice = createSlice({
     },
     fetchUsersSuccess(state, action) {
       state.loading = false;
-      state.users = action.payload;
+      // @ts-ignore
+      state.users = state.users.concat(action.payload);
       state.error = '';
     },
     fetchUsersFailure(state, action) {
@@ -30,9 +31,9 @@ const usersSlice = createSlice({
 export const { fetchUsersBegin, fetchUsersSuccess, fetchUsersFailure } = usersSlice.actions;
 export default usersSlice.reducer;
 
-export const searchUsers = (searchTerm: string) => function (dispatch: any) {
+export const searchUsers = (searchTerm: string, page?: 1 | number) => function (dispatch: any) {
   dispatch(fetchUsersBegin());
-  getData(`${API_BASE_URL}/search/users?page=1&query=${searchTerm}`)
+  getData(`${API_BASE_URL}/search/users?page=${page}&query=${searchTerm}`)
     .then((response) => {
       if (response.errors) {
         dispatch(fetchUsersFailure(response.errors[0]));
